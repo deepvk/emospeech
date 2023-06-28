@@ -1,5 +1,5 @@
 # Emotional Text to Speech
-Official implementation of EmoSpeech, submited to SSW12
+Official implementation of EmoSpeech, accepted to SSW12
 
 
 ## How to run
