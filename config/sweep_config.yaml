@@ -1,0 +1,10 @@
+program: train.py
+project: sweep_etts
+name: transformer_layers
+method: grid
+metric:
+  name: val_loss
+  goal: minimize
+parameters:
+  decoder_layers:
+      values: [1, 2, 3]
