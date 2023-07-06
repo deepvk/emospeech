@@ -1,4 +1,4 @@
-# Emotional Text to Speech
+# EmoSpeech: Guiding FastSpeech2 Towards Emotional Text to Speech
 
 [![arXiv](https://img.shields.io/badge/arXiv-2307.00024-brightgreen.svg?style=flat-square)](https://arxiv.org/abs/2307.00024)  [![githubio](https://img.shields.io/badge/GitHub.io-Audio_Samples-blue?logo=Github&style=flat-square)](https://dariadiatlova.github.io/emospeech)
 
