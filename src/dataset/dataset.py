@@ -47,7 +47,6 @@ class Dataset(torch.utils.data.Dataset):
         self.speaker_id, self.file_id, self.emotion_id, self.text = self.process_meta(
             filename
         )
-        self.min_speaker_id = cfg.min_speaker_id
         with open(Path(self.preprocessed_path) / "phones.json", "r") as f:
             self.phones_mapping = json.load(f)
         self.sort = sort
