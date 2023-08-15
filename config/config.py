@@ -43,9 +43,9 @@ class TrainConfig:
     # Transformer Encoder
     padding_index: int = 0
     max_seq_len: int = 2000
-    phones_mapping_path: Path = Path("/app/data/phones.json")
+    phones_mapping_path: Path = Path("/app/data/preprocessed/phones.json")
     transformer_encoder_hidden: int = 512
-    transformer_encoder_layer: int = 6
+    transformer_encoder_layer: int = 9
     transformer_encoder_head: int = 2
     transformer_conv_filter_size: int = 512
     transformer_conv_kernel_size: tuple = (9, 1)
@@ -53,7 +53,7 @@ class TrainConfig:
 
     # Transformer Decoder
     transformer_decoder_hidden: int = 512
-    transformer_decoder_layer: int = 6
+    transformer_decoder_layer: int = 9
     transformer_decoder_head: int = 2
     transformer_decoder_dropout: float = 0.2
 
@@ -78,7 +78,7 @@ class TrainConfig:
     n_speakers: int = 10
     n_egemap_features: int = 2 # 0, ... 7, could be more than 7 if adjust preprocessing
     train_batch_size: int = 64
-    val_batch_size: int = 64
+    val_batch_size: int = 32
     device: str = "cuda"
 
     # Discriminator
@@ -93,19 +93,19 @@ class TrainConfig:
     seed: int = 55
     precision: str = 32
     matmul_precision: str = "high"
-    lightning_checkpoint_path: str = "/app/data" # directory to save checkpoints
-    train_from_checkpoint: Optional[str] = "emospeech.ckpt" # filename in <lightning_checkpoint_path> directory
+    lightning_checkpoint_path: str = "/app/data/checkpoint" # directory to save checkpoints
+    train_from_checkpoint: Optional[str] = None # filename in <lightning_checkpoint_path> directory
     num_workers: int = 1
-    test_wav_files_directory: str = "/app/data/test_wav"
-    test_mos_files_directory: str = "/app/data/test_mos"
-    total_training_steps: int = 100000
-    val_each_epoch: int = 10
-    val_audio_log_each_step: int = 1000 # each 1000 step will log audio to wandb
+    test_wav_files_directory: str = "/app/data/wav"
+    test_mos_files_directory: str = "/app/data/mos"
+    total_training_steps: int = 150000
+    val_each_epoch: int = 20
+    val_audio_log_each_step: int = 1 # if greater than one will log audio each <n> step, set to save storage
 
     # Test / Inference
-    testing_checkpoint: str = "/app/data/emospeech.ckpt"
-    audio_save_path: str = "/app/data/test_wav" # directory where synthesised wav files will be saved
-    nisqa_save_path: str = "/app/data/test_mos" # directory where nisqa output files will be saved
+    testing_checkpoint: str = "/app/data/emospeech.ckpt" #"data/deepvk_large_checkpoint/epoch=1079-step=127440.ckpt"
+    audio_save_path: str = "/app/data/deepvk_test" # directory where synthesised wav files will be saved
+    nisqa_save_path: str = "/app/data/deepvk_test" # directory where nisqa output files will be saved
     limit_generation: int = None # if specified, will stop and do not iterate through all samples in testing loader
     compute_nisqa_on_test: bool = True # is True will write NISQA scores and stds to test.log file
     phones_path: str = "/app/data/phones.json" # path to phones dictionary

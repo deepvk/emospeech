@@ -66,6 +66,7 @@ def test(config: TrainConfig) -> None:
         train=False,
     )
     model.eval()
+    model = model.to(config.device)
     torch.set_float32_matmul_precision(config.matmul_precision)
     original_audio_path, reconstructed_audio_path, generated_audio_path = create_paths(
         config.audio_save_path
@@ -88,6 +89,7 @@ def test(config: TrainConfig) -> None:
         batch_dict_no_tf = model._get_batch_dict_from_dataloader(batch, validation=True)
         batch_dict_tf = model._get_batch_dict_from_dataloader(batch, validation=False)
         model_output = model.model(model.device, batch_dict_no_tf)
+
         for i, tag in enumerate(batch_dict_no_tf["ids"]):
             current_sample += 1
             if (
