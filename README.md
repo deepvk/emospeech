@@ -62,26 +62,37 @@ This is how your data folder should look like:
               └── val.txt
         
 ### Training
-1. Configure arguments in `config/config.py`
-2. Run `python -m src.scripts.train `
+1. Configure arguments in `config/config.py`.
+2. Run `python -m src.scripts.train`.
 
 ### Testing
 Testing is implemented on testing subset of ESD dataset. To synthesize audio and compute neural MOS (NISQA TTS):
-1. Configure arguments in `config/config.py` under `# Inference` section
-2. Run `python -m src.scripts.test`
+1. Configure arguments in `config/config.py` under `Inference` section.
+2. Run `python -m src.scripts.test`.
 
 You can find NISQA TTS for original, reconstructed and generated audio in `test.log`.
 
 ### Inference
 EmoSpeech is trained on phoneme sequences. Supported phones can be found in  `data/preprocessed/phones.json`. This repositroy is created for academic research and doesn't support automatic grapheme-to-phoneme conversion. However, if you would like to synthesize arbitrary sentence with emotion conditioning you can:
 1. Generate phoneme sequence from graphemes with [MFA](https://github.com/MontrealCorpusTools/mfa-models).
+   
       1.1 Follow the [installation guide](https://montreal-forced-aligner.readthedocs.io/en/latest/installation.html)
       
       1.2 Download english g2p model: `mfa model download g2p english_us_arpa`
       
       1.3 Generate phoneme.txt from graphemes.txt: `mfa g2p graphemes.txt english_us_arpa phoneme.txt`
       
-2. Run `python -m src.scripts.inference`, specifying phone sequence with `--sq ` argument. For example
+3. Run `python -m src.scripts.inference`, specifying arguments:
+
+**Аrgument** | **Meaning** | **Possible Values** | **Default value**
+---|---|---|---
+`-sq` | Phoneme sequence to synthesisze| Find in `data/phones.json`. | **Not set, required argument.**
+`-emo` | Id of desired voice emotion | 0: neutral, 1: angry, 2: happy, 3: sad, 4: surprise. | 1
+`-sp` | Id of speaker voice | From 1 to 10, correspond to 0011 ... 0020 in original ESD notation. | 5
+`-p` | Path where to save synthesised audio | Any with `.wav` extension. | generation_from_phoneme_sequence.wav
+
+
+For example
 
 
  ``` 
