@@ -1,0 +1,30 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: emospeech
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Daria
+    family-names: Diatlova
+    affiliation: deepvk
+    email: d.dyatlova@vk.team
+  - given-names: Vitaly
+    family-names: Shutov
+    affiliation: deepvk
+    email: vi.shutov@corp.vk.com
+identifiers:
+  - type: url
+    value: 'https://arxiv.org/abs/2307.00024'
+    description: arXiv preprint
+repository-code: 'https://github.com/deepvk/emospeech'
+url: 'https://dariadiatlova.github.io/emospeech'
+abstract: >-
+  EmoSpeech is an acoustic model for an emotional speech
+  synthesis.
+keywords:
+  - TTS
+license: Apache-2.0
