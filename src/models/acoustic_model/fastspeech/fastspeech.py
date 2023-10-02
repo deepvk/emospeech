@@ -63,6 +63,10 @@ class FastSpeech2(nn.Module):
             encoder_output = encoder_output + speaker_embedding.unsqueeze(1).expand(
                 -1, max_src_len, -1
             )
+            encoder_output = encoder_output + emotion_embedding.unsqueeze(1).expand(
+                -1, max_src_len, -1
+            )
+
         if not self.conditional_cross_attention:
             max_src_len = torch.max(batch_dict["text_lens"]).item()
             encoder_output = encoder_output + emotion_embedding.unsqueeze(1).expand(

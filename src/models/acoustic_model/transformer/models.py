@@ -64,8 +64,7 @@ class Encoder(nn.Module):
                     kernel_size,
                     dropout=dropout,
                     conditional_layer_norm=config.conditional_layer_norm,
-                    conditional_cross_attention=config.conditional_cross_attention,
-                    separate_head=config.separate_attention_head,
+                    conditional_cross_attention=config.conditional_cross_attention
                 )
                 for _ in range(n_layers)
             ]
@@ -140,8 +139,7 @@ class Decoder(nn.Module):
                     kernel_size,
                     dropout=dropout,
                     conditional_layer_norm=config.conditional_layer_norm,
-                    conditional_cross_attention=config.conditional_cross_attention,
-                    separate_head=config.separate_attention_head,
+                    conditional_cross_attention=config.conditional_cross_attention
                 )
                 for _ in range(n_layers)
             ]

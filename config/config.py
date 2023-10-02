@@ -59,10 +59,18 @@ class TrainConfig:
 
     # Emotion Conditioning
     emotion_emb_hidden_size: int = 256
-    conditional_cross_attention: bool = True # if False emotion and speaker embeddings added to the encoder output
-    conditional_layer_norm: bool = True # if False Layer Norm applied
-    separate_attention_head: bool = False # if True, train separate attention heads for CCA, doesn't bring significant profit
     stack_speaker_with_emotion_embedding: bool = True # if True speaker and emotion embedding would be concatenated
+    n_egemap_features: int = 2 # 0, ... 7, could be more than 7 if adjust preprocessing
+    conditional_layer_norm: bool = True # if False Layer Norm applied
+    conditional_cross_attention: bool = True # if False emotion and speaker embeddings added to the encoder output
+
+    # Discriminator
+    compute_adversarial_loss: bool = True
+    compute_fm_loss: bool = True
+    optimizer_lrate_d: float = 1e-4
+    optimizer_betas_d: tuple[float, float] = (0.5, 0.9)
+    kernels_d: tuple[float, ...] = (3, 5, 5, 5, 3)
+    strides_d: tuple[float, ...] = (1, 2, 2, 1, 1)
 
     # FastSpeech2, Variance Predictor
     speaker_emb_hidden_size: int = 256
@@ -76,18 +84,9 @@ class TrainConfig:
     multi_emotion: bool = True
     n_emotions: int = 5
     n_speakers: int = 10
-    n_egemap_features: int = 2 # 0, ... 7, could be more than 7 if adjust preprocessing
     train_batch_size: int = 64
     val_batch_size: int = 32
     device: str = "cuda"
-
-    # Discriminator
-    optimizer_lrate_d: float = 1e-4
-    optimizer_betas_d: tuple[float, float] = (0.5, 0.9)
-    kernels_d: tuple[float, ...] = (3, 5, 5, 5, 3)
-    strides_d: tuple[float, ...] = (1, 2, 2, 1, 1)
-    compute_adversarial_loss: bool = True
-    compute_fm_loss: bool = True
 
     # Train
     seed: int = 55
@@ -98,7 +97,7 @@ class TrainConfig:
     num_workers: int = 1
     test_wav_files_directory: str = "/app/data/wav"
     test_mos_files_directory: str = "/app/data/mos"
-    total_training_steps: int = 150000
+    total_training_steps: int = 50000
     val_each_epoch: int = 20
     val_audio_log_each_step: int = 1 # if greater than one will log audio each <n> step, set to save storage
 
@@ -132,7 +131,7 @@ class TrainConfig:
     limit_val_batches: Optional[int] = 4 # val_batch_size * limit_val_batches samples will be logged to wandb and saved locally each val step
     limit_test_batches: Optional[int] = 4 # test_batch_size * limit_test_batches samples will be logged to wandb and saved locally during test
     num_sanity_val_steps: int = 4
-    save_top_k_model_weights: int = 3
+    save_top_k_model_weights: int = 5
     metric_monitor_mode: str = "max" # 'min' or 'max'
 
     def __post_init__(self):
