@@ -27,7 +27,7 @@ class PositionWiseFeedForward(nn.Module):
             output = self.layer_norm(x + emotion_cross_attention_output)
         else:
             output = self.layer_norm(x)
-        output = x.transpose(1, 2)
+        output = output.transpose(1, 2)
         output = self.w_2(F.relu(self.w_1(output)))
         output = output.transpose(1, 2)
         output = self.dropout(output)
@@ -61,7 +61,7 @@ class FFTBlock(torch.nn.Module):
             d_model, d_inner, kernel_size, dropout=dropout
         )
         self.conditional_cross_attention = conditional_cross_attention
-        if conditional_cross_attention and separate_head:
+        if conditional_cross_attention:
             self.cca = MultiHeadAttention(
                 n_head,
                 d_model,
@@ -85,8 +85,7 @@ class FFTBlock(torch.nn.Module):
         )
         self_attention_output = self_attention_output.masked_fill(mask.unsqueeze(-1), 0)
         if speaker_emotion_embedding is not None:
-            attention_forward = self.cca if self.cca is not None else self.mha
-            emotion_cross_attention_output, attention_weights = attention_forward(
+            emotion_cross_attention_output, attention_weights = self.cca(
                 q=enc_input,
                 k=speaker_emotion_embedding,
                 v=speaker_emotion_embedding,
