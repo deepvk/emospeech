@@ -109,4 +109,4 @@ For example
 4. [NISQA: Speech Quality and Naturalness Assessment](https://github.com/gabrielmittag/NISQA)
 5. [Montreal Forced Aligner Models](https://github.com/MontrealCorpusTools/mfa-models)
 6. [Modified VocGAN](https://github.com/rishikksh20/VocGAN/tree/master)
-7. [AdaSpeech](https://github.com/rishikksh20/AdaSpeech)
+7. [AdaSpeech](https://github.com/tuanh123789/AdaSpeech)
