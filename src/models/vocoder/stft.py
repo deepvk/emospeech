@@ -24,10 +24,10 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
-import torch
-import numpy as np
-
 from typing import Tuple
+
+import numpy as np
+import torch
 from scipy.signal import get_window
 
 

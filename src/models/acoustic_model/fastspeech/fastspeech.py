@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 
 from src.models.acoustic_model.fastspeech.modules import VarianceAdaptor
-from src.models.acoustic_model.transformer.models import Encoder, Decoder
+from src.models.acoustic_model.transformer.models import Decoder, Encoder
 from src.utils.fastspeech_utils import get_mask_from_lengths
 from src.utils.utils import crash_with_msg
 

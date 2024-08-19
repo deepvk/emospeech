@@ -2,17 +2,15 @@ from dataclasses import asdict
 from pathlib import Path
 
 import torch
-from lightning import seed_everything, Trainer
-from lightning.pytorch.callbacks import (
-    TQDMProgressBar,
-    ModelCheckpoint,
-)
+from lightning import Trainer, seed_everything
+from lightning.pytorch.callbacks import ModelCheckpoint, TQDMProgressBar
 from lightning.pytorch.loggers import WandbLogger
 
 from config.config import TrainConfig
 from src.dataset.dataset import get_dataloader
 from src.models import Generator, TorchSTFT
-from src.models.acoustic_model.fastspeech.lightning_model import FastSpeechLightning
+from src.models.acoustic_model.fastspeech.lightning_model import \
+    FastSpeechLightning
 from src.utils.utils import set_up_logger
 from src.utils.vocoder_utils import load_checkpoint
 
@@ -70,9 +68,11 @@ def train(config: TrainConfig) -> None:
         model,
         train_dataloaders=train_loader,
         val_dataloaders=val_loader,
-        ckpt_path=Path(config.lightning_checkpoint_path) / config.train_from_checkpoint
-        if config.train_from_checkpoint
-        else None,
+        ckpt_path=(
+            Path(config.lightning_checkpoint_path) / config.train_from_checkpoint
+            if config.train_from_checkpoint
+            else None
+        ),
     )
     trainer.validate(model, dataloaders=val_loader)
     trainer.test(model, dataloaders=test_loader)

@@ -2,22 +2,23 @@
 """
 @author: Gabriel Mittag, TU-Berlin
 """
-import time
-import os
-from glob import glob
 import datetime
+import os
+import time
+from glob import glob
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
 
 pd.options.mode.chained_assignment = None
-from tqdm import tqdm
-import yaml
 import torch
 import torch.nn as nn
+import yaml
 from torch import optim
 from torch.utils.data import DataLoader
+from tqdm import tqdm
+
 from . import NISQA_lib as NL
 
 

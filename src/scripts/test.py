@@ -2,17 +2,18 @@ from dataclasses import asdict
 from pathlib import Path
 
 import torch
-from tqdm import tqdm
 import torchaudio
-from loguru import logger
 from lightning import seed_everything
+from loguru import logger
+from tqdm import tqdm
 
 from config.config import TrainConfig
 from src.dataset.dataset import get_dataloader
 from src.metrics.NISQA.tts_predict_mos import get_mos_scores
 from src.models import Generator, TorchSTFT
-from src.models.acoustic_model.fastspeech.lightning_model import FastSpeechLightning
-from src.utils.utils import set_up_logger, write_wav, compute_overall_mos
+from src.models.acoustic_model.fastspeech.lightning_model import \
+    FastSpeechLightning
+from src.utils.utils import compute_overall_mos, set_up_logger, write_wav
 from src.utils.vocoder_utils import load_checkpoint, synthesize_wav_from_mel
 
 
@@ -82,9 +83,11 @@ def test(config: TrainConfig) -> None:
         )
     for batch in tqdm(
         test_loader,
-        total=config.limit_generation
-        if config.limit_generation is not None
-        else len(test_loader),
+        total=(
+            config.limit_generation
+            if config.limit_generation is not None
+            else len(test_loader)
+        ),
     ):
         batch_dict_no_tf = model._get_batch_dict_from_dataloader(batch, validation=True)
         batch_dict_tf = model._get_batch_dict_from_dataloader(batch, validation=False)

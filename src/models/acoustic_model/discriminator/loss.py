@@ -59,8 +59,7 @@ class AdversarialLoss(nn.Module):
             mel_predictions.transpose(1, 2), emotion_embedding
         )
         discriminator_loss_fake = 0.5 * (
-            torch.mean(gen_conditional_out**2)
-            + torch.mean(gen_unconditional_out**2)
+            torch.mean(gen_conditional_out**2) + torch.mean(gen_unconditional_out**2)
         )
 
         return discriminator_loss_real + discriminator_loss_fake

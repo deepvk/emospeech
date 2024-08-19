@@ -1,6 +1,7 @@
 import json
-import torch
+
 import numpy as np
+import torch
 import torch.nn as nn
 
 from src.models.acoustic_model.transformer.layers import FFTBlock
@@ -64,7 +65,7 @@ class Encoder(nn.Module):
                     kernel_size,
                     dropout=dropout,
                     conditional_layer_norm=config.conditional_layer_norm,
-                    conditional_cross_attention=config.conditional_cross_attention
+                    conditional_cross_attention=config.conditional_cross_attention,
                 )
                 for _ in range(n_layers)
             ]
@@ -139,7 +140,7 @@ class Decoder(nn.Module):
                     kernel_size,
                     dropout=dropout,
                     conditional_layer_norm=config.conditional_layer_norm,
-                    conditional_cross_attention=config.conditional_cross_attention
+                    conditional_cross_attention=config.conditional_cross_attention,
                 )
                 for _ in range(n_layers)
             ]

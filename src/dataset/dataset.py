@@ -1,9 +1,9 @@
 import json
-import torch
-import numpy as np
-
-from typing import Any
 from pathlib import Path
+from typing import Any
+
+import numpy as np
+import torch
 from torch.utils.data import DataLoader
 
 from config.config import TrainConfig

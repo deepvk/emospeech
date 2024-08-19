@@ -4,7 +4,7 @@ import re
 import string
 from dataclasses import asdict
 from pathlib import Path
-from typing import Tuple, List, Optional
+from typing import List, Optional, Tuple
 
 import numpy as np
 import opensmile
@@ -18,9 +18,9 @@ from scipy.io import wavfile
 from sklearn.preprocessing import StandardScaler
 
 from config.config import TrainConfig
-from src.dataset.compute_mel import ComputeMelEnergy, PAD_MEL_VALUE
+from src.dataset.compute_mel import PAD_MEL_VALUE, ComputeMelEnergy
 from src.utils.multiprocess_utils import run_pool
-from src.utils.utils import write_txt, set_up_logger, crash_with_msg
+from src.utils.utils import crash_with_msg, set_up_logger, write_txt
 
 
 class Preprocessor:
@@ -103,6 +103,7 @@ class Preprocessor:
         )
 
         logger.info(f"Fitting normalizing feature scalers...")
+        logger.info(f"Results: {results}")
         for result in results:
             if result:
                 result_string, pitch, energy, egemap, n = result
@@ -112,9 +113,10 @@ class Preprocessor:
                     energy_scaler.partial_fit(energy.reshape((-1, 1)))
                     egemap_scaler.partial_fit(egemap.reshape((-1, 1)).T)
                     n_frames += n
+                    logger.info(f"Successfully fit scalers!")
                 except Exception:
-                    logger.info(f"Pitch scaler exception: {pitch.shape}")
                     logger.info(f"Pitch scaler exception: {result_string}")
+                    logger.info(f"Pitch shape: {pitch.shape}")
 
         pitch_mean = pitch_scaler.mean_[0]
         pitch_std = pitch_scaler.scale_[0]

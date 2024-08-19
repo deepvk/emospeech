@@ -13,7 +13,8 @@ from src.metrics.NISQA.tts_predict_mos import get_mos_scores
 from src.models import FastSpeech2, FastSpeech2Loss, Generator, TorchSTFT
 from src.models.acoustic_model.discriminator.jcu_discriminator import JCU
 from src.models.acoustic_model.discriminator.loss import AdversarialLoss
-from src.utils.utils import write_wav, compute_overall_mos, compute_mos_per_speaker
+from src.utils.utils import (compute_mos_per_speaker, compute_overall_mos,
+                             write_wav)
 from src.utils.vocoder_utils import synthesize_wav_from_mel
 
 
@@ -273,10 +274,10 @@ class FastSpeechLightning(LightningModule):
             [self.reconstructed_mos_score_val[1]]
         )
         for speaker in list(self.reconstructed_mos_scores_val_per_speaker.keys()):
-            log_dict[
-                f"val_mos_per_speaker/{speaker}/reconstructed"
-            ] = torch.FloatTensor(
-                [self.reconstructed_mos_scores_val_per_speaker[speaker]]
+            log_dict[f"val_mos_per_speaker/{speaker}/reconstructed"] = (
+                torch.FloatTensor(
+                    [self.reconstructed_mos_scores_val_per_speaker[speaker]]
+                )
             )
 
         if generated_mos_score and generated_mos_scores_per_speaker:
@@ -287,9 +288,9 @@ class FastSpeechLightning(LightningModule):
                 [generated_mos_score[1]]
             )
             for speaker in list(generated_mos_scores_per_speaker.keys()):
-                log_dict[
-                    f"val_mos_per_speaker/{speaker}/generated"
-                ] = torch.FloatTensor([generated_mos_scores_per_speaker[speaker]])
+                log_dict[f"val_mos_per_speaker/{speaker}/generated"] = (
+                    torch.FloatTensor([generated_mos_scores_per_speaker[speaker]])
+                )
         else:
             # as we save best models monitoring val mos, write 0 to the dict if no audios were generated
             log_dict[f"val_mos/generated_audio_mos_mean"] = torch.FloatTensor([0.0])
@@ -349,9 +350,9 @@ class FastSpeechLightning(LightningModule):
             [reconstructed_mos_score[1]]
         )
         for speaker in list(reconstructed_mos_scores_per_speaker.keys()):
-            log_dict[
-                f"test_mos_per_speaker/{speaker}/reconstructed"
-            ] = torch.FloatTensor([reconstructed_mos_scores_per_speaker[speaker]])
+            log_dict[f"test_mos_per_speaker/{speaker}/reconstructed"] = (
+                torch.FloatTensor([reconstructed_mos_scores_per_speaker[speaker]])
+            )
 
         if generated_mos_score and generated_mos_scores_per_speaker:
             log_dict[f"test_mos/generated_audio_mos_mean"] = torch.FloatTensor(
@@ -361,9 +362,9 @@ class FastSpeechLightning(LightningModule):
                 [generated_mos_score[1]]
             )
             for speaker in list(generated_mos_scores_per_speaker.keys()):
-                log_dict[
-                    f"test_mos_per_speaker/{speaker}/generated"
-                ] = torch.FloatTensor([generated_mos_scores_per_speaker[speaker]])
+                log_dict[f"test_mos_per_speaker/{speaker}/generated"] = (
+                    torch.FloatTensor([generated_mos_scores_per_speaker[speaker]])
+                )
 
         self.log_dict(log_dict, sync_dist=True)
         self.test_step_outputs.clear()

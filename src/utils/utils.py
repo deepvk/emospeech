@@ -1,12 +1,12 @@
-import sys
 import json
-import numpy as np
-
+import sys
+from collections import defaultdict
 from pathlib import Path
 from typing import Union
+
+import numpy as np
 from loguru import logger
 from scipy.io import wavfile
-from collections import defaultdict
 
 
 def compute_overall_mos(d: dict) -> tuple[float, float]:
