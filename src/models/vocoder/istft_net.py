@@ -1,13 +1,13 @@
+from typing import Tuple
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-
 from loguru import logger
-from torch.nn import Conv1d, ConvTranspose1d, AvgPool1d, Conv2d
-from torch.nn.utils import weight_norm, remove_weight_norm, spectral_norm
+from torch.nn import AvgPool1d, Conv1d, Conv2d, ConvTranspose1d
+from torch.nn.utils import remove_weight_norm, spectral_norm, weight_norm
 
-from typing import Tuple
-from src.utils.vocoder_utils import init_weights, get_padding
+from src.utils.vocoder_utils import get_padding, init_weights
 
 LRELU_SLOPE = 0.1
 

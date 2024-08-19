@@ -1,11 +1,9 @@
 import torch
 import torch.nn as nn
-
 from torch.nn import functional as F
+
 from src.models.acoustic_model.transformer.attention import (
-    MultiHeadAttention,
-    ScaledDotProductAttention,
-)
+    MultiHeadAttention, ScaledDotProductAttention)
 from src.utils.utils import crash_with_msg
 
 
@@ -84,7 +82,7 @@ class FFTBlock(torch.nn.Module):
             mask=attention_mask,
         )
         self_attention_output = self_attention_output.masked_fill(mask.unsqueeze(-1), 0)
-        if speaker_emotion_embedding is not None:
+        if self.cca is not None:
             emotion_cross_attention_output, attention_weights = self.cca(
                 q=enc_input,
                 k=speaker_emotion_embedding,

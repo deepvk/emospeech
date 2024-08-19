@@ -7,8 +7,9 @@ from lightning import seed_everything
 
 from config.config import TrainConfig
 from src.models import Generator, TorchSTFT
-from src.models.acoustic_model.fastspeech.lightning_model import FastSpeechLightning
-from src.utils.utils import set_up_logger, write_wav, crash_with_msg
+from src.models.acoustic_model.fastspeech.lightning_model import \
+    FastSpeechLightning
+from src.utils.utils import crash_with_msg, set_up_logger, write_wav
 from src.utils.vocoder_utils import load_checkpoint, synthesize_wav_from_mel
 
 

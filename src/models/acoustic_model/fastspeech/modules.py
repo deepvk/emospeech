@@ -1,11 +1,11 @@
 import json
+from pathlib import Path
+from typing import Any, Tuple
+
 import torch
 import torch.nn as nn
 
-from pathlib import Path
-from typing import Tuple, Any
-
-from src.utils.fastspeech_utils import pad, get_mask_from_lengths
+from src.utils.fastspeech_utils import get_mask_from_lengths, pad
 
 
 class VarianceAdaptor(nn.Module):
@@ -17,6 +17,7 @@ class VarianceAdaptor(nn.Module):
         self.energy_predictor = VariancePredictor(config)
         self.device = config.device
         self.n_egemap_features = config.n_egemap_features
+
         n_bins = config.variance_embedding_n_bins
 
         with open(str(Path(config.preprocessed_data_path) / "stats.json")) as f:
@@ -52,6 +53,9 @@ class VarianceAdaptor(nn.Module):
                     for i in range(config.n_egemap_features)
                 ]
             )
+            self.egemap_embedding_hidden_dim = config.transformer_encoder_hidden
+            self.egemap_features_projector = nn.Linear(1, self.n_egemap_features)
+            self.egemap_embedding_projector = nn.Linear(self.n_egemap_features, 1)
         else:
             self.egemap_predictor = None
             self.egemap_bins = None
@@ -60,19 +64,34 @@ class VarianceAdaptor(nn.Module):
     def get_egemap_embedding(
         self, device, x, mask
     ) -> Tuple[torch.Tensor, torch.Tensor]:
-        prediction = self.egemap_predictor(x, mask)
-        bs, seq_len = prediction.shape
-        prediction = prediction[:, 0].unsqueeze(1).expand(bs, seq_len).contiguous()
-        embedding = self.egemap_embeddings[0](
-            torch.bucketize(prediction.to(device), self.egemap_bins[0].to(device))
+        seq_len_prediction = self.egemap_predictor(x, mask)
+        bs, seq_len = seq_len_prediction.shape
+        n_features_prediction = self.egemap_features_projector(
+            torch.mean(seq_len_prediction, dim=-1).unsqueeze(-1)
         )
-        for i in range(1, self.n_egemap_features):
-            _prediction = prediction[:, i].unsqueeze(1).expand(bs, seq_len).contiguous()
-            embedding += self.egemap_embeddings[i](
-                torch.bucketize(_prediction.to(device), self.egemap_bins[i].to(device))
+        embeddings = torch.empty(
+            bs,
+            seq_len,
+            self.egemap_embedding_hidden_dim,
+            self.n_egemap_features,
+            device=seq_len_prediction.device,
+        )
+        for i in range(self.n_egemap_features):
+            current_egemap_feature_prediction = (
+                n_features_prediction[:, i]
+                .unsqueeze(1)
+                .expand(bs, seq_len)
+                .contiguous()
             )
+            embeddings[:, :, :, i] = self.egemap_embeddings[i](
+                torch.bucketize(
+                    current_egemap_feature_prediction.to(device),
+                    self.egemap_bins[i].to(device),
+                )
+            )
+        embedding = self.egemap_embedding_projector(embeddings).squeeze(-1)
 
-        return prediction[:, : self.n_egemap_features], embedding
+        return n_features_prediction, embedding
 
     def get_pitch_embedding(
         self, device, x, target, mask

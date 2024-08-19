@@ -1,8 +1,7 @@
-import torch
-import torchaudio
 import numpy as np
+import torch
 import torch.nn as nn
-
+import torchaudio
 
 MIN_MEL_VALUE = 1e-05
 PAD_MEL_VALUE = -11.52

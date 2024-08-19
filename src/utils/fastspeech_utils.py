@@ -1,8 +1,8 @@
-import torch
-import numpy as np
-import torch.nn.functional as F
+from typing import List, Optional
 
-from typing import Optional, List
+import numpy as np
+import torch
+import torch.nn.functional as F
 
 
 def pad_or_trim_mel(
